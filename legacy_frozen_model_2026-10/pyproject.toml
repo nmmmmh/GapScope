@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gapscope-public-code"
+version = "0.1.0"
+description = "Training, inference, and scoring code for the GapScope FROZEN model"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+  "torch>=2.4,<2.5",
+  "numpy>=1.24,<2",
+  "pandas>=1.5,<3",
+  "scipy>=1.10,<2",
+]
+
+[project.scripts]
+gapscope-predict = "public_cli:predict_main"
+gapscope-score = "public_cli:score_main"
+gapscope-train = "train:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = [
+  "anchored_transfer",
+  "density_score",
+  "inference",
+  "public_cli",
+  "runtime",
+  "train",
+  "training_data",
+]
+packages = ["modules"]
+
+[tool.setuptools.package-data]
+modules = ["symmetry_table.json"]
