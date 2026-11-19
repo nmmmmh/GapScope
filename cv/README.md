@@ -1,0 +1,26 @@
+# Grouped 5-fold CV over all experimental band-gap data: GapScope vs Roost and ablations
+
+Everything is under /data/czx/GapScope_Revision_20261113/cv (nothing written elsewhere on c137-13; remote Roost scratch under /data/czx/GapScope_cv_remote on c137-105 and c136-152).
+
+## Data and folds
+- Tier A (provenance-linked): 205 core reports (56 compositions) + 32 external records (29 compositions), 237 records, 85 compositions, SG/structure inputs and hierarchical source/specimen weights kept. Three external MAPbBr3 records keep their stored composition_key (it differs from the pymatgen key of their formula).
+- Tier B (compilation): all 3,895 rows of the Roost release EX csv -> 3,728 distinct (key,value) pairs, 2,467 compositions, composition-only inputs (frozen Roost-encoder features, same encoder as hse_ex).
+- Overlap: 30 compositions in both tiers (27 core, 3 external); union 2,522 compositions. Group = canonical composition key; both tiers of a composition share a fold.
+- Folds: seed 20261113; tier-A compositions shuffled and dealt round-robin (17 per fold), tier-B-only compositions dealt separately. Inner validation = 7 tier-A compositions per fold (10% of training-fold tier-A compositions, seed 20261113+100+fold), removed from tier-A training and used only for early stopping (also dropped from the aggregate pool). fold_summary.json, folds_comp.csv, folds_chem.csv, data/inner_val_*.json.
+- Chemical-system variant: same procedure with group = element set (folds_chem.csv).
+- Aggregate pool (2,753 labels): rows of test-fold keys and inner-validation keys removed per fold (test-fold hits: see gs_out/*_info_*.json, field pool_dropped_test, e.g. 274 rows in comp fold 1). HSE pool (84,729 rows, already free of all tier-A keys and the 183 expanded keys): test-fold keys removed and HSE pretraining redone per (variant, fold, seed) (cvlib.pretrain_hse = hse/pretrain.py unchanged otherwise); dropped rows/keys in info json field hse.
+
+## Models (3 seeds 17/29/41 x 5 folds, identical folds)
+GS (H_AUX recipe, code reused unchanged: fold-specific HSE-warm aggregate prior via hse/arm.py logic, head-only 326 parameters, tier-A hierarchical weights over the 4 views, DIST auxiliary on tier-B train compositions normalised by their number, replay 0.1, selection on inner-validation tier-A NLL); GS_MEAN (tier-A targets and tier-B targets replaced by weighted/arithmetic means, MEAN_AUX); GS_noHSE (cold aggregate prior); GS_noB (no tier-B term); ROOST (release xfer-mp fine-tune of the MP-only states, 250 epochs, robust L1, AdamW 3e-4, batch 128, release internal 20% validation split; training csv = training-fold tier-A records of all training compositions (inner-val compositions included, Roost has no inner validation) + tier-B rows as individual entries; Laplace(mu, ale/sqrt2), 3-seed equal mixture). Roost formulas for core records are the release-style strings of original_inputs (e.g. CH6NPbBr3).
+Code: build_data.py, cvlib.py, run_gs_cv.py, sanity.py, roost_prep.py, run_roost_cv.py (local) / run_roost_cv_r.py (remote copy with torch.load weights_only=False and minimal tqdm/tensorboard stubs because those packages are absent there; training logic untouched), evaluate_cv.py.
+
+## Where runs ran
+- GS family and chem GS: c137-13 (RTX 4080, torch as in hse/), 3 seed processes, about 15 min wall for comp + chem.
+- ROOST comp folds 1-4: c137-105 (RTX 2080 Ti, GPUs 1,2, torch 2.4.0); ROOST comp fold 5 and all chem folds: c136-152 (RTX 4090 D GPU 2, torch 2.6.0; numerics may differ at ~1e-6). Roost runs started on c137-13 were stopped (GPU-memory conflict with GS) and not used. Duplicate comp fold 3-4 jobs started on 152 were killed unused.
+
+## Evaluation
+Every composition is tested once; ensemble = equal mixture of the 3 seeds of the fold that held it out. Tier A: per-record scores weighted by hierarchical weights (equal composition mass), reported per composition; tier B: per composition, equal among distinct values; pooled = equal weight per (tier, composition) unit (85 A + 2,467 B). GS tier-A main = full view with all available inputs (formula-only for tier B). Windows PV [1.1,1.7], visible [1.8,3.1]: one formula-only distribution per composition over all 2,522 test compositions; labels = union of tier-A reports and tier-B values; top-k by median distance breaks ties (inside the window) by distance to the window centre. PIT: 10 bins (tier A per record, tier B per distinct value). Bootstrap: paired over compositions, 4000 draws, seed 20261113 (pooled units grouped by composition). Phase check: omega^2 = max(0,(SSB-(k-1)MSW)/(SST+MSW)) over phases of a composition vs mean over its records of 1-width80(formula_sg)/width80(formula_only); 13 compositions qualify.
+Outputs: metrics.csv, bootstrap.csv, pit.csv, windows.csv (summary), windows_units.csv, phase_check.csv, phase_summary.json, predictions_summary.csv (per-unit scores), gs_out/ (component predictions), roost_runs/pred_*.csv, sanity.json.
+
+## Sanity
+sanity.py runs the CV pipeline code (aggregate_prior_h + fit_head, old split, 813-composition aux set) for H_AUX seed 17 fold 1: max abs difference vs archived hse/out/H_AUX_seed17_fold1_pred.npz = 0.0 for core0-3, exp, ext0, ext3; prior state difference 0.0; same selected epoch (111).
