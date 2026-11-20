@@ -16,12 +16,13 @@ A few scripts from earlier versions of the analysis are kept for comparison. The
 | Folder | What it holds |
 |---|---|
 | `data/` | Supplementary Data 1 (237 traced reports of 85 compositions, with source, specimen and phase) Supplementary Data 2 (polymorph gap spread *D*<sub>c</sub> and window flags for 505 SNUMAT compositions) and Supplementary Data 3 (SNUMAT polymorphs, *D*<sub>c</sub> and computed floor for the 4,604 compositions of the Matbench `expt_gap` task) |
-| `model/` | The distributional model (`gsft.py`, with `gsft4.py` for composition holdout and `gsft7.py` for chemical-family holdout), the Roost wrapper (`roostlib.py`, `original_graph_adapter.py`), the Roost-cal inputs (`roost_cal_pred.py`) and the run environment (`env.sh`) |
-| `cv/` | Data tables and fold assignments (`build_data.py`, `folds_comp.csv`, `folds_chem.csv`), Roost training (`run_roost_cv.py`), EasyUQ (`easyuq.py`), evaluation (`evaluate_cv_v4.py`, `run_eval_v4.py`) and paired bootstrap (`paired_bootstrap_final.py`) |
+| `model/` | GapScope, the distributional model of the paper (`gsft.py`, with `gsft4.py` for composition holdout and `gsft7.py` for chemical-family holdout), the Roost wrapper (`roostlib.py`, `original_graph_adapter.py`), the Roost-cal inputs (`roost_cal_pred.py`) and the run environment (`env.sh`) |
+| `cv/` | Data tables and fold assignments (`build_data.py`, `folds_comp.csv`, `folds_chem.csv`), Roost training (`run_roost_cv.py`), EasyUQ (`easyuq.py`), evaluation (`evaluate_cv.py`, `evaluate_cv_v4.py`, `run_eval_v4.py`) and paired bootstrap (`paired_bootstrap_final.py`) |
+| `hse/` | The Materials Project pretraining pool (`build_pool.py`), the shared training code (`hse_common.py`, `runtime/`) and the earlier comparison arms (see its README) |
 | `cv/repeated/` | The four further fold assignments and their summary over five assignments (see its README) |
 | `analysis/` | Scripts behind the paper, by topic (below) |
 | `tools/` | `setup_paths.py`, which sets up the paths for a new machine in one step, and `paths_original.json`, the original location of every path |
-| `external/` | Where the public inputs go (see its README) |
+| `external/` | Where the external inputs go (see its README) |
 | `legacy_frozen_model_2026-10/` | The earlier fixed-encoder model previously published here; it is not the model of this paper |
 
 ## Where each result comes from
@@ -35,9 +36,9 @@ A few scripts from earlier versions of the analysis are kept for comparison. The
 | Matbench computed floor and Supplementary Data 3 (Section 2.3, S4) | `analysis/refcheck/e8s_sd3_snumat.py`, `e9_robust.py` |
 | Benchmark of Borlido et al. (Section 2.3, S4) | `analysis/borlido/` |
 | Polymorph pairs, local descriptors, Madelung test (Section 2.4, S5) | `analysis/struct/pairs_analysis.py`, `analysis/refcheck/m1_madelung.py`, `e3_pairs.py`, `e5_ionic.py`, `analysis/maps2d/` |
-| Distributional model, coverage, CRPS, conditional and conformal calibration (Section 2.5, S6) | `model/`, `cv/`, `cv/repeated/`, `analysis/refcheck/k1_conformal.py`, `k2_conformal_full.py`, `k4_mondrian.py`, `k9_nosg_cov.py`, `k10_nosg_rank.py` (space group withheld) |
+| GapScope (distributional model), coverage, CRPS, conditional and conformal calibration (Section 2.5, S6) | `model/`, `cv/`, `cv/repeated/`, `analysis/refcheck/k1_conformal.py`, `k2_conformal_full.py`, `k4_mondrian.py`, `k9_nosg_cov.py`, `k10_nosg_rank.py` (space group withheld) |
 | Band-gap windows and the computed screen (Section 2.6, S7) | `analysis/window/`, `analysis/refcheck/c7_screen2.py`, `k3b_window.py`, `c16_rcs_sum.py` |
-| Figures | `analysis/figs_v4/` (`fig3.py` and the TOC graphic `toc_v5.py` read `descr/d2_per_composition_energy.csv`, written by `analysis/refcheck/c15_write.py`) |
+| Figures | `analysis/figs_v4/` (Figure 5b from `fig5b_new.py`, placed in the PowerPoint assembly of Figure 5; `fig3.py` and the TOC graphic `toc_v7_curation.py` read `descr/d2_per_composition_energy.csv`, written by `analysis/refcheck/c15_write.py`) |
 
 ## External inputs
 

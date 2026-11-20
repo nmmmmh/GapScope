@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gapscope-public-code"
 version = "0.1.0"
-description = "Training, inference, and scoring code for the GapScope FROZEN model"
+description = "Training, inference, and scoring code for the earlier fixed-encoder (FROZEN) model, a predecessor of GapScope"
 requires-python = ">=3.10,<3.13"
 dependencies = [
   "torch>=2.4,<2.5",

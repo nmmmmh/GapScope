@@ -49,7 +49,7 @@ fig.savefig('FigS1.pdf'); fig.savefig('FigS1.png', dpi=300); plt.close(fig)
 
 # ======================= Figure S2
 a = pd.read_csv(R0 + 'cv/predictions_summary_v4a.csv'); t = pd.read_csv(R0 + 'cv/predictions_summary_v4t1.csv')
-MODELS = [('ROOST', a, 'Roost', '#9FBFD3'), ('ROOST_CAL', a, 'Roost-cal', '#7FA7BF'), ('EASYUQ_KS', a, 'EasyUQ', '#7A68B0'), ('GS_SELCAL_PRE_NZ_SC', t, 'This work', TEAL2)]
+MODELS = [('ROOST', a, 'Roost', '#9FBFD3'), ('ROOST_CAL', a, 'Roost-cal', '#7FA7BF'), ('EASYUQ_KS', a, 'EasyUQ', '#7A68B0'), ('GS_SELCAL_PRE_NZ_SC', t, 'GapScope', TEAL2)]
 def wmedian(y, w):
     o = np.argsort(y); y, w = y[o], w[o]; c = np.cumsum(w) / w.sum(); return y[np.searchsorted(c, 0.5)]
 per = {}

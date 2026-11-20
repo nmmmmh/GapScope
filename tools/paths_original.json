@@ -1,6 +1,6 @@
 {
   "_comment": "Absolute paths of the original runs, kept in the scripts for provenance. tools/setup_paths.py maps each to its local location.",
-  "/data/czx/GapScope_Revision_20261113": "work/ (analysis working directory; code folders linked from analysis/, cv/ and data/)",
+  "/data/czx/GapScope_Revision_20261113": "work/ (analysis working directory; code folders linked from analysis/, cv/, hse/ and data/)",
   "/data/czx/GapScope_cv_remote/rw": "model/ (training code)",
   "/data/czx/GapScope_cv_remote/cv": "work/cv_remote/ (training output)",
   "/data/czx/GapScope_cv_remote": "work/cv_remote/",
@@ -12,5 +12,8 @@
   "/home/czx/2024/spinels/data": "external/mp/",
   "/home/czx/spinels/data/matbench": "external/matbench/",
   "/home/czx/2024/BandgapFusion_Consolidated": "external/traced_data/",
-  "/home/czx/2024/BandgapFusion_MeanTargetControl_20261023": "external/traced_data_v1/"
+  "/home/czx/2024/BandgapFusion_MeanTargetControl_20261023": "external/traced_data_v1/",
+  "/home/czx/2024/BandgapFusion_Stage1_20261023": "external/stage1/",
+  "/home/czx/2024/BandgapFusion_Stage2_20261023": "external/stage2/",
+  "/home/czx/2024/BandgapFusion_ExperimentalAugmentationWork": "external/augmentation/"
 }

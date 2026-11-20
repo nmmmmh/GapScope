@@ -14,7 +14,7 @@ S['ph'] = S.phase_label.apply(norm_ph)
 nph = S[S.ph != ''].groupby('composition_key').ph.nunique()
 a = pd.read_csv(R0 + 'cv/predictions_summary_v4a.csv'); t = pd.read_csv(R0 + 'cv/predictions_summary_v4t1.csv')
 MODELS = [('ROOST', a, 'Roost', '#DCE8EE'), ('ROOST_CAL', a, 'Roost-cal', '#B4CDDB'), ('EASYUQ_KS', a, 'EasyUQ', '#7FA7BF'),
-          ('GS_SELCAL_PRE_NZ_SC', t, 'This work', TEAL2)]
+          ('GS_SELCAL_PRE_NZ_SC', t, 'GapScope', TEAL2)]
 PCOL = {'β': PH[0], 'γ': PH[1], 'κ': PH[2], 'α': PH[3]}
 
 def wmedian(y, w):

@@ -2,6 +2,9 @@
 and how many of them have an accessible polymorph outside it. (b) Promised against delivered hit rate, chemical-family holdout."""
 import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from gs5 import *
+for _f in ("arial.ttf", "arialbd.ttf", "ariali.ttf"):   # Arial files sit in figs_v4, as for the other figures
+    _p = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), _f)
+    if os.path.exists(_p): fm.fontManager.addfont(_p)
 import pandas as pd
 plt.rcParams['svg.fonttype'] = 'path'
 D = os.path.dirname(os.path.abspath(__file__)); W = '/data/czx/GapScope_Revision_20261113/window/par2/'
@@ -28,7 +31,7 @@ for i, (w, lab) in enumerate(rows):
 ax.set_yticks([0, 1]); ax.set_yticklabels([r[1] for r in rows])
 ax.set_xlim(0, 1); ax.set_ylim(-0.5, 1.5)
 ax.set_xticks([0, 0.25, 0.5, 0.75, 1]); ax.set_xticklabels(['0%', '25%', '50%', '75%', '100%'])
-ax.set_xlabel('Share of candidates')
+ax.set_xlabel('Share of compositions')
 for x0, c, ec, lab in ((0.0, LCORAL, CORAL, 'A polymorph outside'), (0.52, LTEAL, TEAL, 'All polymorphs inside')):
     ax.add_patch(plt.Rectangle((x0, 1.13), 0.05, 0.075, transform=ax.transAxes, color=c, ec=ec, lw=0.6, clip_on=False))
     ax.text(x0 + 0.07, 1.17, lab, transform=ax.transAxes, fontsize=6.2, va='center', color=NAVY)
@@ -36,9 +39,9 @@ fig.text(0.008, 0.93, '(a)', fontsize=8, fontweight='bold')
 # (b)
 bx = fig.add_axes([0.585, 0.20, 0.27, 0.70])
 bx.plot([0.45, 0.95], [0.45, 0.95], color=GREYP, lw=0.8, ls=(0, (3, 1.5)), zorder=0)
-models = [('This work', 'GapScope', TEAL2), ('Roost-cal', 'ROOST_CAL', INDIGO), ('Roost-cal*', 'ROOST_CAL_CV', RCS), ('EasyUQ', 'EASYUQ_KS', EUQ)]
-lab_off = {('This work', 'PV'): (0.012, 0.03), ('Roost-cal', 'PV'): (0.015, -0.035), ('EasyUQ', 'PV'): (-0.012, 0.035), ('Roost-cal*', 'PV'): (0.015, -0.035),
-           ('This work', 'VIS'): (-0.012, 0.035), ('Roost-cal', 'VIS'): (0.015, -0.035), ('EasyUQ', 'VIS'): (-0.012, 0.035), ('Roost-cal*', 'VIS'): (0.02, 0.028)}
+models = [('GapScope', 'GapScope', TEAL2), ('Roost-cal', 'ROOST_CAL', INDIGO), ('Roost-cal*', 'ROOST_CAL_CV', RCS), ('EasyUQ', 'EASYUQ_KS', EUQ)]
+lab_off = {('GapScope', 'PV'): (0.012, 0.03), ('Roost-cal', 'PV'): (0.015, -0.035), ('EasyUQ', 'PV'): (-0.012, 0.035), ('Roost-cal*', 'PV'): (0.015, -0.035),
+           ('GapScope', 'VIS'): (-0.012, 0.035), ('Roost-cal', 'VIS'): (0.015, -0.035), ('EasyUQ', 'VIS'): (-0.012, 0.035), ('Roost-cal*', 'VIS'): (0.02, 0.028)}
 for name, key, c in models:
     for w, mk in (('PV', 'o'), ('VIS', 's')):
         t = P[(P.model == key) & (P.window == w)]

@@ -1,8 +1,8 @@
-# GapScope public code
+# Earlier fixed-encoder model (2026-10)
 
-> Earlier fixed-encoder model, kept for the record. It is not the model of "Polymorphism Hides an Error Floor in Band-Gap Benchmarks"; that model is in `model/` and `cv/` at the top of this repository, and "the paper" below refers to the earlier version.
+> Earlier fixed-encoder model, kept for the record. It is not the model of "Polymorphism Hides an Error Floor in Band-Gap Benchmarks"; that model, GapScope, is in `model/` and `cv/` at the top of this repository, and "the paper" below refers to the earlier version.
 
-This repository contains the training, inference and density-scoring implementation for **GapScope**. The primary model retains the internal key `FROZEN` for compatibility with archived checkpoints: 3 seeds (`17`, `29`, `41`) × 5 composition-grouped folds. The supplied training entry also runs the paper's matched `F`, `J`, `J_SG`, and `ANCHORED` comparison arms. Later supporting diagnostics do not replace the paper's FROZEN model.
+This repository contains the training, inference and density-scoring implementation of the earlier fixed-encoder model (October 2026), a predecessor of GapScope. The primary model retains the internal key `FROZEN` for compatibility with archived checkpoints: 3 seeds (`17`, `29`, `41`) × 5 composition-grouped folds. The supplied training entry also runs the paper's matched `F`, `J`, `J_SG`, and `ANCHORED` comparison arms. Later supporting diagnostics do not replace the paper's FROZEN model.
 
 The repository contains source code and a symmetry lookup table only. It contains no experimental or auxiliary data, CIFs, encoder weights, trained checkpoints, figures, or caches. Data and trained weights must be supplied separately.
 

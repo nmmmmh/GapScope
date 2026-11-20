@@ -66,6 +66,7 @@ def lab(A, name, xy, off):
                arrowprops=dict(arrowstyle='-', color=NAVY, lw=0.4, shrinkA=0, shrinkB=2))
 fmlA = {r['composition_key']: r['formula'] for r in tA['records']}
 cm_c = LinearSegmentedColormap.from_list('c', [LTEAL, TEAL, CORAL])
+cm_g = LinearSegmentedColormap.from_list('g', [(0, NAVY), (0.2, TEAL2), (0.4, TEAL), (0.7, SAND), (1, LSAND)])   # FigS4 gap map, lightness rises monotonically over 0-8 eV
 def clean(ax):
     ax.set_xticks([]); ax.set_yticks([])
     for sp in ax.spines.values(): sp.set_visible(False)
@@ -77,7 +78,7 @@ m = np.isfinite(Dc)
 for A in (ax, bx): A.scatter(Ec[~m, 0], Ec[~m, 1], s=2.2, c='#D9DDE3', lw=0, zorder=1)
 o = np.argsort(Dc[m]); xm, ym, dm = Ec[m, 0][o], Ec[m, 1][o], Dc[m][o]
 sc = ax.scatter(xm, ym, s=4.5, c=np.clip(dm, 0.02, 3), cmap=cm_c, norm=LogNorm(0.02, 3), lw=0, zorder=2)
-cb = fig.colorbar(sc, ax=ax, fraction=0.04, pad=0.02); cb.set_label('Polymorph gap spread (eV)', fontsize=7); cb.ax.tick_params(labelsize=6)
+cb = fig.colorbar(sc, ax=ax, fraction=0.04, pad=0.02); cb.set_label('Gap range of all polymorphs (eV)', fontsize=7); cb.ax.tick_params(labelsize=6)
 bx.scatter(xm, ym, s=2.2, c='#B8C0CC', lw=0, zorder=1)
 ft = np.array([floor[k] for k in np.array(keys)[is_tr]])
 o2 = np.argsort(ft)
@@ -95,7 +96,7 @@ for e in ('pdf', 'png', 'svg'): fig.savefig(O + 'FigS3.' + e, dpi=600)
 fig = plt.figure(figsize=(7.0, 3.1))
 ax = fig.add_axes([0.02, 0.05, 0.40, 0.84]); bx = fig.add_axes([0.53, 0.05, 0.40, 0.84])
 o = np.argsort(S.Band_gap_HSE.values)
-sc = ax.scatter(S.x.values[o], S.y.values[o], s=2.0, c=S.Band_gap_HSE.values[o], cmap='viridis', vmin=0, vmax=8, lw=0)
+sc = ax.scatter(S.x.values[o], S.y.values[o], s=2.0, c=S.Band_gap_HSE.values[o], cmap=cm_g, vmin=0, vmax=8, lw=0)
 cb = fig.colorbar(sc, ax=ax, fraction=0.04, pad=0.02); cb.set_label('HSE06 gap (eV)', fontsize=7); cb.ax.tick_params(labelsize=6)
 bx.scatter(S.x, S.y, s=2.0, c='#D9DDE3', lw=0, zorder=1)
 tr = [k for k in floor if npoly.get(k, 0) >= 3]
@@ -104,7 +105,7 @@ print('S4b compositions', [(fmlA[k], int(npoly[k]), round(floor[k], 3)) for k in
 for k in sel:
     g = S[S.composition_key == k].sort_values('Band_gap_HSE')
     bx.plot(g.x, g.y, color=NAVY, lw=0.6, alpha=0.6, zorder=2)
-    bx.scatter(g.x, g.y, s=16, c=g.Band_gap_HSE, cmap='viridis', vmin=0, vmax=8, edgecolor=NAVY, lw=0.4, zorder=3)
+    bx.scatter(g.x, g.y, s=16, c=g.Band_gap_HSE, cmap=cm_g, vmin=0, vmax=8, edgecolor=NAVY, lw=0.4, zorder=3)
     i = g.x.values.argmax(); lab(bx, fmlA[k], (g.x.values[i], g.y.values[i]), OFF4)
 cb2 = fig.colorbar(sc, ax=bx, fraction=0.04, pad=0.02); cb2.set_label('HSE06 gap (eV)', fontsize=7); cb2.ax.tick_params(labelsize=6)
 for A in (ax, bx): clean(A)

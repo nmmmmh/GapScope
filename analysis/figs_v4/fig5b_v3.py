@@ -1,3 +1,4 @@
+# SUPERSEDED by fig5b_new.py (Figure 5b as a dot plot of coverage per model, with the chemical-family width as a column).
 """Figure 5b in the original coverage-against-width style, relabelled so that no text or marker overlaps."""
 import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from gs5 import *

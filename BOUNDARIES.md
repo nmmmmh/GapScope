@@ -23,7 +23,7 @@ This file lists where the results of the paper hold and where they do not. It is
   - Roost-cal* 0.806;
   - Roost + Mondrian (D_c) 0.799.
   (`analysis/refcheck/k2_conformal_full.py`, `analysis/refcheck/k4_mondrian.py`)
-- The difference lies in how the coverage is shared across compositions (SI Table S13, lower block).
+- The difference lies in how the coverage is shared across compositions (SI Table S11, lower block).
 - Under composition holdout, where the training data contain the same chemistry, every model shows the same gradient across the thirds of the floor:
   - distributional model 0.93 / 0.74 / 0.66;
   - Roost + conformal 0.93 / 0.83 / 0.66.
@@ -43,3 +43,4 @@ This file lists where the results of the paper hold and where they do not. It is
   - the compositions with D_c ≥ 0.3 eV are nearly six times as common as across SNUMAT, and most of this enrichment comes from having more recorded polymorphs (64% against 44% among compositions with two or more accessible polymorphs);
   - sixteen compositions already enter the benchmark more than once with different structures, SiC four times and TlI three times among them;
   - every material is computed on its matched experimental structure.
+- Pretraining on HSE06-level gaps does not improve the ordering of the phases of one composition. Over the 13 compositions of the phase check under composition holdout, the Spearman ρ between predicted and measured phase order is 0.48 without the pretraining and 0.07 with it. Both runs carry the HSE06 polymorph token, so this pretraining is not what supplies the phase information. (pretraining ablation, 2026-11-20; c137-13 `cv/phase_summary_b1_comp.json`, `cv/phase_summary_hf_comp.json`)
